@@ -1,0 +1,9 @@
+django==6.1
+djangorestframework
+markdown
+django-filter
+gunicorn
+psycopg2-binary
+django-environ
+django-cors-headers
+whitenoise
