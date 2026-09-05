@@ -26,6 +26,24 @@ services:
       - "8080:8080"
     depends_on:
       - db
+  
+  backend-django:
+    build: 
+      context: ./backend-django
+      dockerfile: Dockerfile.dev
+    container_name: django-docker
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-django:/app 
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_django
+    env_file:
+      - ./backend-django/.env
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:

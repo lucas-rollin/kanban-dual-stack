@@ -5,6 +5,7 @@
 # Environment (security)
 .env
 .env.*
+*.env
 !.env.example
 
 # Python
