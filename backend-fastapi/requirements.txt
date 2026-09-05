@@ -1,0 +1,9 @@
+fastapi[standard]
+sqlalchemy
+sqlalchemy[asyncio]
+alembic 
+psycopg2-binary
+asyncpg
+pydantic-settings
+python-dotenv
+pwdlib[argon2]

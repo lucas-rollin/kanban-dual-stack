@@ -5,7 +5,7 @@ A full‑stack application designed for agile project management, featuring two 
 - Django REST Framework
 - FastAPI + SQLAlchemy
 
-Both backends are powered by PostgreSQL and consumed by a React + TypeScript frontend.
+Both backends are powered by separate PostgreSQL databases and consumed by a React + TypeScript frontend.
 
 ## Prerequisites
 
@@ -20,13 +20,13 @@ Both backends are powered by PostgreSQL and consumed by a React + TypeScript fro
     git clone https://github.com/lucas-rollin/kanban-dual-stack.git
     ```
 
-2. Copy and configure environment variables — there are **two separate `.env` files**, one per level:
+2. Copy and configure environment variables. There are **two separate `.env` files**, one per level:
 
     ```bash
     # Root: Postgres superuser credentials, shared by db + adminer
     cp .env.example .env
 
-    # Django: app secrets and its DATABASE_URL
+    # Django: app secrets
     cp backend-django/.env.example backend-django/.env
     ```
 
@@ -59,7 +59,7 @@ Both backends are powered by PostgreSQL and consumed by a React + TypeScript fro
 A single Postgres instance hosts two databases, created automatically on first startup via `postgres/init-db.sql`:
 
 - `kanban_django` — used by the Django backend
-- `kanban_fastapi` — used by the FastAPI backend (coming soon)
+- `kanban_fastapi` — used by the FastAPI backend
 
 Changing `postgres/init-db.sql` after the container has already run once won't re-apply automatically. Reset with:
 
