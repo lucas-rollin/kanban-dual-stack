@@ -21,6 +21,7 @@ htmlcov/
 .dmypy.json
 dmypy.json
 venv/
+.venv/
 env/
 ENV/
 *.egg-info/

@@ -30,13 +30,14 @@ services:
   backend-django:
     build: 
       context: ./backend-django
-      dockerfile: Dockerfile.dev
+      target: development
     container_name: django-docker
     restart: unless-stopped
     ports:
       - "8000:8000"
     volumes:
       - ./backend-django:/app 
+      - /app/.venv
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_django
     env_file:
@@ -48,13 +49,14 @@ services:
   backend-fastapi:
     build: 
       context: ./backend-fastapi
-      dockerfile: Dockerfile.dev
+      target: development
     container_name: fastapi-docker
     restart: unless-stopped
     ports:
       - "8001:8000"
     volumes:
       - ./backend-fastapi:/app
+      - /app/.venv
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_fastapi
     env_file:

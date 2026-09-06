@@ -2,14 +2,15 @@
 
 A full-stack agile project management application featuring two backend implementations (**Django REST Framework** and **FastAPI + SQLAlchemy**) powered by a shared PostgreSQL instance and a React + TypeScript frontend.
 
-## Architecture
+## Docker Architecture & Environments
 
-- **Frontend:** React + TypeScript
-- **Backends:**
-  - Django REST Framework (`http://localhost:8000`)
-  - FastAPI + SQLAlchemy (`http://localhost:8001`)
-- **Database:** PostgreSQL (single instance hosting databases `kanban_django` & `kanban_fastapi`)
-- **Database UI:** Adminer (`http://localhost:8080`)
+Every service uses a **single multi-stage `Dockerfile`** with dedicated `development` and `production` build targets. Dependency management is handled by **`uv`** for Python backends and **`pnpm`** for the React frontend.
+
+| Service | Development Target (`development`) | Production Target (`production`) | Package Manager |
+| --- | --- | --- | --- |
+| **Django** (`backend-django`) | Live reload (`runserver`), bind-mounted source, anonymous volume for `/app/.venv` | Multi-stage, non-root `appuser`, `gunicorn`, static asset collection | `uv` (`pyproject.toml` + `uv.lock`) |
+| **FastAPI** (`backend-fastapi`) | Live reload (`fastapi dev`), bind-mounted source, anonymous volume for `/app/.venv` | Multi-stage, non-root `appuser`, `uvicorn` | `uv` (`pyproject.toml` + `uv.lock`) |
+| **Frontend** (`frontend`) | Live reload (`vite`), bind-mounted source, anonymous volume for `/app/node_modules` | Multi-stage, static bundle built with `pnpm build` and served via Nginx Alpine | `pnpm` (`package.json` + `pnpm-lock.yaml`) |
 
 ## Prerequisites
 
@@ -30,6 +31,7 @@ cp .env.example .env
 # Backend configs
 cp backend-django/.env.example backend-django/.env
 cp backend-fastapi/.env.example backend-fastapi/.env
+cp frontend/.env.example frontend/.env
 ```
 
 *(Update these files with your preferred local values before continuing).*
@@ -42,6 +44,9 @@ docker compose up -d db adminer
 
 # Start both backends (dev mode with live reload)
 docker compose up -d backend-django backend-fastapi
+
+# Start React frontend
+docker compose up -d frontend
 ```
 
 ### 3. Run Database Migrations
@@ -66,6 +71,7 @@ Run `docker compose ps` to ensure all containers are running. Access the endpoin
 
 - **Django:** [http://localhost:8000](http://localhost:8000)
 - **FastAPI:** [http://localhost:8001](http://localhost:8001)
+- **React:** [http://localhost:5173](http://localhost:5173)
 - **Adminer:** [http://localhost:8080](http://localhost:8080) *(Server: `db`)*
 
 ## Database Management
@@ -79,19 +85,54 @@ docker compose down -v
 docker compose up -d db
 ```
 
-## Docker Environments
+### Python Backends (uv)
 
-Both backends include separate Dockerfiles for development and production:
+Dependencies are managed using pyproject.toml and locked with uv.lock.
 
-| Component | Development (`Dockerfile.dev`) | Production (`Dockerfile.prod`) |
-| --- | --- | --- |
-| **Django** | Single-stage, bind-mounted, `manage.py runserver` | Multi-stage, non-root, `gunicorn` + `collectstatic` |
-| **FastAPI** | Single-stage, bind-mounted, `fastapi dev` | Multi-stage, non-root, `uvicorn` |
+- Install / sync local environment:
+
+    ```bash
+    cd backend-django   # or cd backend-fastapi
+    uv sync
+    ```
+
+- Add a runtime dependency:
+
+    ```bash
+    uv add <package_name>
+    ```
+
+- Add a development dependency:
+
+    ```bash
+    uv add --dev <package_name>
+    ```
+
+- Update lockfile:
+
+    ```bash
+    uv lock --upgrade
+    ```
+
+**Note**
+During development with Docker Compose, an anonymous volume (/app/.venv) protects the container's virtual environment from host mounts. If you add or remove packages via uv on your host machine, rebuild the development containers
+so Docker updates the internal virtual environment:
+
+```bash
+docker compose up -d --build
+```
 
 ## Production Deployment
 
-To run the application using the production-optimized multi-stage Dockerfiles (`Dockerfile.prod`), use the dedicated production compose file:
+To run the full application using the production targets (target: production):
 
 ```bash
 docker compose -f docker-compose.prod.yml up -d --build
 ```
+
+In production mode:
+
+- Backends run under a non-root user (appuser) using production WSGI/ASGI servers (gunicorn / uvicorn).
+- No host source directories are mounted into /app.
+- Static files for Django are collected into WhiteNoise storage during image build.
+- The React frontend is compiled to static files and served directly by Nginx.

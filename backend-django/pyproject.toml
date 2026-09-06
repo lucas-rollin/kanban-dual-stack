@@ -1,0 +1,22 @@
+[project]
+name = "backend-django"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "django==6.1",
+    "djangorestframework",
+    "markdown",
+    "django-filter",
+    "gunicorn",
+    "psycopg2-binary",
+    "django-environ",
+    "django-cors-headers",
+    "whitenoise",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-django",
+    "ruff",
+]

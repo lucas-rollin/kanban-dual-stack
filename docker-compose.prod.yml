@@ -30,13 +30,14 @@ services:
   backend-django:
     build: 
       context: ./backend-django
-      dockerfile: Dockerfile.prod
+      target: production
     container_name: django-docker
     restart: unless-stopped
     ports:
       - "8000:8000"
     volumes:
       - ./backend-django:/app 
+      - /app/.venv
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_django
     env_file:
@@ -48,13 +49,14 @@ services:
   backend-fastapi:
     build: 
       context: ./backend-fastapi
-      dockerfile: Dockerfile.prod
+      target: production
     container_name: fastapi-docker
     restart: unless-stopped
     ports:
       - "8001:8000"
     volumes:
       - ./backend-fastapi:/app
+      - /app/.venv
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_fastapi
     env_file:
@@ -62,6 +64,32 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - ./frontend/.env
+    
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./frontend/package.json
 
 volumes:
   postgres_data:
