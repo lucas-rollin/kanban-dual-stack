@@ -23,6 +23,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 RUN SECRET_KEY=build-dummy-key \
     DATABASE_URL=sqlite:///build.db \
     DEBUG=False \
+    CORS_ALLOWED_ORIGINS=localhost \
     python manage.py collectstatic --noinput
 
 # --- Stage 4: Production target ---
