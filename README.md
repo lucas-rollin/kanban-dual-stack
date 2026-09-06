@@ -44,7 +44,23 @@ docker compose up -d db adminer
 docker compose up -d backend-django backend-fastapi
 ```
 
-### 3. Verify
+### 3. Run Database Migrations
+
+Once the containers are running, apply the database schemas:
+
+- **Django:**
+
+    ```bash
+    docker compose exec backend-django python manage.py migrate
+    ```
+
+- **FastAPI:**
+
+    ```bash
+    docker compose exec backend-fastapi alembic upgrade head
+    ```
+
+### 4. Verify
 
 Run `docker compose ps` to ensure all containers are running. Access the endpoints at:
 
