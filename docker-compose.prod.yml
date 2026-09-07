@@ -39,7 +39,7 @@ services:
       - ./backend-django:/app 
       - /app/.venv
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_django
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/scrumban_django
       CORS_ALLOWED_ORIGINS: "http://localhost,http://127.0.0.1,http://localhost:80,http://127.0.0.1:80"
     env_file:
       - ./backend-django/.env
@@ -59,7 +59,7 @@ services:
       - ./backend-fastapi:/app
       - /app/.venv
     environment:
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_fastapi
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/scrumban_fastapi
       CORS_ALLOWED_ORIGINS: "http://localhost,http://127.0.0.1,http://localhost:80,http://127.0.0.1:80"
     env_file:
       - ./backend-fastapi/.env
