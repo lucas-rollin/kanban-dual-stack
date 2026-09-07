@@ -1,6 +1,20 @@
 # Kanban Dual Stack
 
-A full-stack agile project management application featuring two backend implementations (**Django REST Framework** and **FastAPI + SQLAlchemy**) powered by a shared PostgreSQL instance and a React + TypeScript frontend.
+*Status: Active Development. Django domain modeling in progress, FastAPI implementation coming next.*
+
+A comparative full-stack project management application implemented with **Django REST Framework** and **FastAPI + SQLAlchemy**, sharing the same PostgreSQL database and consumed by the same React + TypeScript frontend.
+
+This project is a **practical reference for developers who know one Python web stack and want to learn the other**. Rather than a lightweight demo, both backends implement identical application capabilities using the idiomatic patterns, testing strategies, and ORM conventions of their respective ecosystems.
+
+## Why This Project?
+
+Most tutorials present Django or FastAPI in isolation, often relying on flat project structures. **Kanban Dual Stack** demonstrates how both ecosystems grow into production-ready architectures featuring non-trivial domain logic, query optimization, authentication, and database integrity.
+
+The project aims for:
+
+- **Feature & Architectural Parity:** both backends implement the same application capabilities and equivalent concerns are easy to locate across the two codebases.
+- **Framework idiomacy:** Django stays idiomatic Django; FastAPI leverages idiomatic Pydantic models, dependency injection, and Async/SQLAlchemy patterns.
+- **Direct Side-by-Side Comparison:** Clear documentation comparing ORMs, validation, permissions, migrations (Django vs. Alembic), and request lifecycles.
 
 ## Docker Architecture & Environments
 
@@ -114,17 +128,16 @@ Dependencies are managed using pyproject.toml and locked with uv.lock.
     uv lock --upgrade
     ```
 
-**Note**
-During development with Docker Compose, an anonymous volume (/app/.venv) protects the container's virtual environment from host mounts. If you add or remove packages via uv on your host machine, rebuild the development containers
-so Docker updates the internal virtual environment:
-
-```bash
-docker compose up -d --build
-```
+> **Note:** During development with Docker Compose, an anonymous volume (`/app/.venv`) protects the container's virtual environment from host mounts. If you add or remove packages via `uv` on your host machine, rebuild the development containers
+> so Docker updates the internal virtual environment:
+>
+> ```bash
+> docker compose up -d --build
+> ```
 
 ## Production Deployment
 
-To run the full application using the production targets (target: production):
+To run the full application using the production targets (`target: production`):
 
 ```bash
 docker compose -f docker-compose.prod.yml up -d --build
@@ -132,7 +145,7 @@ docker compose -f docker-compose.prod.yml up -d --build
 
 In production mode:
 
-- Backends run under a non-root user (appuser) using production WSGI/ASGI servers (gunicorn / uvicorn).
-- No host source directories are mounted into /app.
+- Backends run under a non-root user (`appuser`) using production WSGI/ASGI servers (`gunicorn` / `uvicorn`).
+- No host source directories are mounted into `/app`.
 - Static files for Django are collected into WhiteNoise storage during image build.
 - The React frontend is compiled to static files and served directly by Nginx.
