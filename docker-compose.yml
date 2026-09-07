@@ -39,7 +39,7 @@ services:
       - ./backend-django:/app 
       - /app/.venv
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_django
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/scrumban_django
     env_file:
       - ./backend-django/.env
     depends_on:
@@ -58,7 +58,7 @@ services:
       - ./backend-fastapi:/app
       - /app/.venv
     environment:
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/kanban_fastapi
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/scrumban_fastapi
     env_file:
       - ./backend-fastapi/.env
     depends_on:

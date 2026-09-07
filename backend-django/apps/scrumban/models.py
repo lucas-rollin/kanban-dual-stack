@@ -80,9 +80,15 @@ class Sprint(models.Model):
 
 
 class Column(models.Model):
+    class Type(models.TextChoices):
+        BACKLOG = "backlog", "Backlog"
+        ACTIVE = "active", "Active"
+        DONE = "done", "Done"
+
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name="columns")
     name = models.CharField(max_length=64)
     position = models.IntegerField(default=0)
+    column_type = models.CharField(max_length=8, choices=Type.choices, default=Type.ACTIVE)
     wip_limit = models.IntegerField(null=True, blank=True)
 
     class Meta:

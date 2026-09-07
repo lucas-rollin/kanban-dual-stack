@@ -1,14 +1,14 @@
-# Kanban Dual Stack
+# Scrumban Dual Stack
 
 *Status: Active Development. Django domain modeling in progress, FastAPI implementation coming next.*
 
-A comparative full-stack project management application implemented with **Django REST Framework** and **FastAPI + SQLAlchemy**, sharing the same PostgreSQL database and consumed by the same React + TypeScript frontend.
+A comparative full-stack project management application implemented with **Django REST Framework** and **FastAPI + SQLAlchemy**, sharing the same PostgreSQL instance and consumed by the same React + TypeScript frontend.
 
 This project is a **practical reference for developers who know one Python web stack and want to learn the other**. Rather than a lightweight demo, both backends implement identical application capabilities using the idiomatic patterns, testing strategies, and ORM conventions of their respective ecosystems.
 
 ## Why This Project?
 
-Most tutorials present Django or FastAPI in isolation, often relying on flat project structures. **Kanban Dual Stack** demonstrates how both ecosystems grow into production-ready architectures featuring non-trivial domain logic, query optimization, authentication, and database integrity.
+Most tutorials present Django or FastAPI in isolation, often relying on flat project structures. **Scrumban Dual Stack** demonstrates how both ecosystems grow into production-ready architectures featuring non-trivial domain logic, query optimization, authentication, and database integrity.
 
 The project aims for:
 
@@ -36,8 +36,8 @@ Every service uses a **single multi-stage `Dockerfile`** with dedicated `develop
 ### 1. Clone & Configure Environment Variables
 
 ```bash
-git clone https://github.com/lucas-rollin/kanban-dual-stack.git
-cd kanban-dual-stack
+git clone https://github.com/lucas-rollin/scrumban-dual-stack.git
+cd scrumban-dual-stack
 
 # Root config (Postgres superuser credentials for DB & Adminer)
 cp .env.example .env
