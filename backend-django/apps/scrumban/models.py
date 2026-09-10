@@ -98,7 +98,9 @@ class Column(models.Model):
                 fields=["board", "name"], name="unique_column_name_per_board"
             ),
             models.UniqueConstraint(
-                fields=["board", "position"], name="unique_column_position_per_board"
+                fields=["board", "position"], 
+                name="unique_column_position_per_board",
+                deferrable=models.Deferrable.DEFERRED,
             ),
         )
 

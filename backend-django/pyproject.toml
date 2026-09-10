@@ -12,6 +12,7 @@ dependencies = [
     "django-environ",
     "django-cors-headers",
     "whitenoise",
+    "drf-spectacular>=0.30.0",
 ]
 
 [dependency-groups]

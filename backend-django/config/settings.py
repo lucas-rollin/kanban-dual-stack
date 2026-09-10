@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_spectacular",
     "corsheaders",
     "apps.accounts",
     "apps.scrumban",
@@ -155,3 +156,13 @@ MAILERS = {
 
 # DRF
 # https://www.django-rest-framework.org/api-guide/settings/
+
+
+
+# DRF Spectacular
+# https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Scrumban Django API',
+    'DESCRIPTION': 'Scrumban Dual Stack API built in Django + DRF',
+    'VERSION': '1.0.0',
+}
